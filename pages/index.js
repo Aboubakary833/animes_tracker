@@ -19,7 +19,7 @@ export default function Home() {
           </header>
           <Container className="flex flex-col justify-center items-center h-5/6">
             <div className='w-5/6'>
-              <h1 className='text-white text-6xl text-center font-bold'>A best place to track your favourites animes and mangas metadata.</h1>
+              <h1 className='text-white text-6xl text-center font-bold'>A best place to track your favourites animes informations.</h1>
             </div>
             <div className='text-center mt-11'>
               <Link href='/animes' passHref>
