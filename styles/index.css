@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: Roboto;
+    src: url(../public/fonts/Roboto-Regular.ttf);
+  }
+  
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+  }
+
+  body::-webkit-scrollbar {
+    appearance: none;
+    width: 5px;
+    background: #0f172a;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: rgb(51 65 85);
+  }
+
+  a {text-decoration: none;}
+
+  .dark {
+    background-color: #0f172a;
+  }
+
+  .light {background-color: #f8f8f8;}
+
+  body {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  
+  .light .navbar {
+    border-bottom: .5px solid #ddd;
+}
+
+.dark .navbar {border-bottom: .5px solid #353941;}
+
+.card {
+  height: 300px;
+}
+
+input {
+  border: 2px solid transparent;
+  transition: all .5s;
+}
+
+input:focus {
+  border: 2px solid #e1650d;
+}
+
+.search svg {
+  width: 20px;
+  height: 20px;
+  color: #707070;
+  position: absolute;
+  top: 12px;
+  right: 10px;
+}
+
+@media (max-width: 475px) {
+  #logo {
+    width: 100px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .card {height: 250px;}
+}
+
+@media (max-width: 330px) {
+  .card {height: 220px;}
+}
+
+@media (min-width: 1535px) {
+  .card {height: 375px;}
+}

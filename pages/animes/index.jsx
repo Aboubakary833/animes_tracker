@@ -1,0 +1,122 @@
+import Head from "next/head";
+import Image from "next/image";
+import Container from "../../components/container";
+import Layout from "../../components/Layout";
+import Logo from "../../public/logo.png";
+import Card from "../../components/card";
+import { IoSearchOutline } from "react-icons/io5";
+import { useRef, useState } from "react";
+import axios from "axios";
+import AnimatedCard from "../../components/animated_card";
+import NoAnimeFound from "../../components/no_anime_found";
+import { useRouter } from "next/router";
+
+export default function AnimesList({ data, pagination }) {
+  const [title, setTitle] = useState("First page animes list")
+  const loadingContainer = new Array(10).fill(AnimatedCard);
+  const [isloading, setIsloading] = useState(false);
+  let [animes, setAnimes] = useState(data);
+  const [searchedAnime, setSearchedAnime] = useState(null)
+
+  const searchInput = useRef();
+  const router = useRouter()
+
+  return (
+    <Layout>
+      <Head>
+        <title>Animes list</title>
+      </Head>
+      <div className="dark pt-12">
+        <header className="pb-2 md:pb-0 backdrop-blur-sm bg-slate-200/90 dark:bg-slate-700/70 fixed top-0 left-0 right-0 z-10">
+          <Container className="flex flex-col md:flex-row justify-between items-center">
+            <Image src={Logo} className="cursor-pointer" id="logo" onClick={() => router.push('/')} />
+            <form
+              className="search relative mr-0 md:mr-3 lg:mr-0"
+              onSubmit={handleSearch}
+            >
+              <input
+                type="text"
+                placeholder="Type a name and enter to search"
+                className="px-3 py-2 rounded-md dark:bg-slate-900 dark:text-white outline-none"
+                style={{ width: 300 }}
+                ref={searchInput}
+                onChange={handleChange}
+              />
+              <IoSearchOutline />
+            </form>
+          </Container>
+        </header>
+        <main className="pt-12 min-h-screen">
+          <h1 className="dark:text-white text-4xl text-center font-semibold mt-12 md:mt-0">
+            {title}
+          </h1>
+          <div className="mt-8">
+            {isloading ? (
+              <Container className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 grid-flow-cols gap-3 lg:gap-4 p-2">
+                {loadingContainer.map((LoadingCard, key) => (
+                  <LoadingCard key={key} />
+                ))}
+              </Container>
+            ) : animes.length === 0 ? (
+              <NoAnimeFound name={searchedAnime} searchbar={searchInput} fill={() => goBack()} />
+            ) : (
+              <Container className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 grid-flow-cols gap-3 lg:gap-4 p-2">
+                {animes.map((anime, key) => {
+                  return (
+                    <Card
+                      title={anime.title}
+                      image={anime.images.jpg.image_url}
+                      url={anime.url}
+                      key={key}
+                    />
+                  );
+                })}
+              </Container>
+            )}
+          </div>
+        </main>
+      </div>
+    </Layout>
+  );
+
+  function goBack() {
+    setAnimes(data)
+    setTitle("First page animes list")
+  }
+
+  function handleSearch(e) {
+    e.preventDefault();
+    setIsloading(true);
+    const query = searchInput.current.value;
+    axios
+      .get(`${process.env.NEXT_PUBLIC_JIKAN_API_URL}?q=${query}&sfw`)
+      .then((response) => {
+        const { data } = response;
+        setAnimes(data.data);
+        setTitle("")
+        if(data.data.length != 0) setTitle(`Search results for "${query}"`)
+        setIsloading(false);
+        setSearchedAnime(query)
+      });
+  }
+
+  function handleChange(e) {
+    if(e.target.value == '') {
+      setAnimes(data)
+      setTitle("First page animes list")
+    }
+    
+  }
+}
+
+export async function getStaticProps() {
+  const response = await axios.get(process.env.NEXT_PUBLIC_JIKAN_API_URL);
+  const { data, pagination } = response.data;
+
+  return {
+    props: {
+      data,
+      pagination,
+    },
+  };
+}
