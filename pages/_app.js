@@ -1,6 +1,5 @@
 import "../styles/index.css";
 import { useState } from "react";
-import { AnimateSharedLayout } from "framer-motion";
 import { ThemeContext } from "../utlis";
 
 function MyApp({ Component, pageProps }) {
@@ -13,9 +12,7 @@ function MyApp({ Component, pageProps }) {
   }
   return (
     <ThemeContext.Provider value={contextValue}>
-      <AnimateSharedLayout>
         <Component {...pageProps} />
-      </AnimateSharedLayout>
     </ThemeContext.Provider>
   );
 }
