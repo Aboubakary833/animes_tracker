@@ -1,21 +1,6 @@
-import axios from "axios";
+import { createContext } from "react";
 
-export function possibleAnimesId() {
-  const ids = [];
-  for (let i = 0; i <= 24008; i++) {
-    ids.push({
-      params: {
-        id: i,
-      },
-    });
-  }
-
-  return ids;
-}
-
-
-export async function getAnimeById(id) {
-    const response = await axios.get(`process.env.NEXT_PUBLIC_JIKAN_API_URL/${id}`)
-    const {data} = response
-    return data
-}
+export const ThemeContext = createContext({
+    theme: null,
+    toggleTheme: (theme) => {}
+})

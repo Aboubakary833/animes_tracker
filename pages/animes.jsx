@@ -1,34 +1,44 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Container from "../../components/container";
-import Layout from "../../components/Layout";
-import Logo from "../../public/logo.png";
-import Card from "../../components/card";
+import Container from "../components/container";
+import Layout from "../components/Layout";
+import Logo from "../public/logo.png";
+import Card from "../components/card";
 import { IoSearchOutline } from "react-icons/io5";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import AnimatedCard from "../../components/animated_card";
-import NoAnimeFound from "../../components/no_anime_found";
+import AnimatedCard from "../components/animated_card";
+import NoAnimeFound from "../components/no_anime_found";
 import { useRouter } from "next/router";
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from "react-icons/hi";
+import { ThemeContext } from "../utlis";
 
-export default function AnimesList({ data, paginationData }) {
+export default function AnimesList() {
+  const {theme} = useContext(ThemeContext)
   const router = useRouter();
   const { page } = router.query;
-  const [title, setTitle] = useState(`Page ${page === undefined ? 1 : page} animes list`);
+  const [title, setTitle] = useState(`First page animes list`);
   const loadingContainer = new Array(10).fill(AnimatedCard);
-  const [isloading, setIsloading] = useState(false);
-  let [animes, setAnimes] = useState(data);
-  let [pagination, setPagination] = useState(paginationData)
+  const [isloading, setIsloading] = useState(true);
+  let [animes, setAnimes] = useState([]);
+  let [pagination, setPagination] = useState(null)
   const [searchedAnime, setSearchedAnime] = useState(null);
 
   const searchInput = useRef();
-
   
   useEffect(function() {
     if(page) {
       axios.get(`${process.env.NEXT_PUBLIC_JIKAN_API_URL}?page=${page}`)
+      .then(response => {
+        const {data, pagination} = response.data
+        setAnimes(data)
+        setPagination(pagination)
+        setTitle(`Page ${page} animes list`)
+        setIsloading(false)
+      })
+    } else {
+      axios.get(process.env.NEXT_PUBLIC_JIKAN_API_URL)
       .then(response => {
         const {data, pagination} = response.data
         setAnimes(data)
@@ -43,7 +53,7 @@ export default function AnimesList({ data, paginationData }) {
       <Head>
         <title>Animes list</title>
       </Head>
-      <div className="dark pt-12">
+      <div className={`${theme} pt-12`}>
         <header className="pb-2 md:pb-0 backdrop-blur-sm bg-slate-200/90 dark:bg-slate-700/70 fixed top-0 left-0 right-0 z-10">
           <Container className="flex flex-col md:flex-row justify-between items-center">
             <Image
@@ -102,6 +112,8 @@ export default function AnimesList({ data, paginationData }) {
             )}
           </div>
         </main>
+        {
+          pagination != null ?
         <footer className="w-full mt-12 pb-4 grid grid-cols-3 gap-x-5">
           <div className="flex justify-center items-center">
             <Link
@@ -120,10 +132,10 @@ export default function AnimesList({ data, paginationData }) {
             </Link>
           </div>
           <div className="flex flex-col justify-center items-center">
-            <p className="text-white">
+            <p className="text-slate-900 dark:text-white">
               {pagination.items.count} / {pagination.items.total} animes
             </p>
-            <p className="text-white">
+            <p className="text-slate-900 dark:text-white">
               {pagination.current_page} / {pagination.last_visible_page} pages
             </p>
           </div>
@@ -140,6 +152,8 @@ export default function AnimesList({ data, paginationData }) {
             </Link>
           </div>
         </footer>
+        : null  
+      }
       </div>
     </Layout>
   );
@@ -175,16 +189,4 @@ export default function AnimesList({ data, paginationData }) {
       setTitle(`Page ${page === undefined ? 1 : page} animes list`);
     }
   }
-}
-
-export async function getStaticProps() {
-  const response = await axios.get(process.env.NEXT_PUBLIC_JIKAN_API_URL);
-  const { data, pagination } = response.data;
-
-  return {
-    props: {
-      data,
-      paginationData: pagination,
-    },
-  };
 }
