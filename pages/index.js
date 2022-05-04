@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Container from '../components/container'
 import styles from '../styles/Home.module.css'
 import Logo from '../public/logo.png'
-import Layout from '../components/Layout'
+import Layout from '../components/layout'
 
 export default function Home() {
   return (

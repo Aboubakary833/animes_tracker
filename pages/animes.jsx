@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../components/container";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 import Logo from "../public/logo.png";
 import Card from "../components/card";
 import { IoSearchOutline } from "react-icons/io5";
