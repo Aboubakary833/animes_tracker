@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Link from "next/link";
-import Layout from "../../components/Layout";
+import Layout from "../../components/layout";
 import Container from "../../components/container";
 import { HiArrowLeft } from "react-icons/hi";
 import {IoLogoYoutube} from 'react-icons/io5'
