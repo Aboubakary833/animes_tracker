@@ -133,7 +133,7 @@ export default function AnimesList() {
           </div>
           <div className="flex flex-col justify-center items-center">
             <p className="text-slate-900 dark:text-white">
-              {pagination.items.count} / {pagination.items.total} animes
+              {pagination.items.count} / {pagination.items.total} <span className="hidden md:inline">animes</span>
             </p>
             <p className="text-slate-900 dark:text-white">
               {pagination.current_page} / {pagination.last_visible_page} pages

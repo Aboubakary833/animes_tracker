@@ -41,9 +41,9 @@ export default function Anime({ id }) {
             </Container>
           </header>
           <Container className="mt-8 pb-8 grid grid-rows-1 md:grid-flow-col md:grid-cols-2 lg:grid-cols-3 md:gap-4">
-            <div className="px-4 md:px-0">
+            <div className="px-4 md:px-2">
               <motion.div
-                className="rounded-xl card w-11/12 md:w-1/2 lg:w-4/5 md:min-h-fit lg:min-h-fit mx-auto md:mx-0"
+                className="rounded-xl card w-11/12 md:w-full lg:w-4/5 md:min-h-fit lg:min-h-fit mx-auto md:mx-0"
                 style={{
                     minHeight: "300px",
                   backgroundImage: `url(${data.images.jpg.image_url})`,
