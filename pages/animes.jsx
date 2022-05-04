@@ -61,6 +61,7 @@ export default function AnimesList() {
               className="cursor-pointer"
               id="logo"
               onClick={() => router.push("/")}
+              alt="anime-tracker"
             />
             <form
               className="search relative mr-0 md:mr-3 lg:mr-0"

@@ -15,7 +15,7 @@ export default function Home() {
       <div className={`w-screen h-screen relative overflow-hidden ${styles.home}`}>
         <div className={`h-full w-full absolute top-0 left-0 ${styles.layer}`}>
           <header className='bg-slate-900 flex justify-center items-center'>
-            <Image src={Logo} />
+            <Image src={Logo} alt="anime-tracker" />
           </header>
           <Container className="flex flex-col justify-center items-center h-5/6">
             <div className='w-5/6'>
